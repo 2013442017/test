@@ -43,12 +43,13 @@ def get_words():
 def get_random_color():
   return "#%06x" % random.randint(0, 0xFFFFFF)
 
-
+def get_date():
+  return date.today()
 client = WeChatClient(app_id, app_secret)
 
 wm = WeChatMessage(client)
 wea, temperature,lowTemp,highTemp = get_weather()
-data = {"weather":{"value":wea},"city":{"value":city},"temperature":{"value":temperature},"lowest":{"value":lowTemp},"highest":{"value":highTemp},"love_days":{"value":get_count()},"birthday_left":{"value":get_birthday()},"words":{"value":get_words(), "color":get_random_color()}}
+data = {"weather":{"value":wea},"city":{"value":city},"temperature":{"value":temperature},"lowest":{"value":lowTemp},"highest":{"value":highTemp},"love_days":{"value":get_count()},"birthday_left":{"value":get_birthday()},"words":{"value":get_words(), "color":get_random_color(),"riqi":get_date()}}
 for user_id in user_ids:
   res = wm.send_template(user_id, template_id, data)
   print(res)
