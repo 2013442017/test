@@ -43,7 +43,7 @@ client = WeChatClient(app_id, app_secret)
 
 wm = WeChatMessage(client)
 wea, temperature,lowTemp,highTemp = get_weather()
-data = {"date": {"value": "{}-{}-{}".format(today.year,today.month,today.day),"color": get_random_color(),"size":"20"},"weather":{"value":wea,"color":get_random_color()},"city":{"value":city,"color":get_random_color()},"temperature":{"value":temperature,"color":get_random_color()},"lowest":{"value":lowTemp,"color":get_random_color()},"highest":{"value":highTemp,"color":get_random_color()},"love_days":{"value":get_count()},"birthday_left":{"value":get_birthday(),"color":get_random_color()},"words":{"value":get_words(), "color":get_random_color()}}
+data = {"date": {"value": "{}-{}-{}".format(today.year,today.month,today.day),"color": get_random_color(),"size":"20"},"weather":{"value":wea,"color":get_random_color()},"city":{"value":city,"color":get_random_color()},"temperature":{"value":temperature,"color":get_random_color()},"lowest":{"value":"{}℃".format(lowTemp),"color":get_random_color()},"highest":{"value":highTemp,"color":get_random_color()},"love_days":{"value":get_count()},"birthday_left":{"value":get_birthday(),"color":get_random_color()},"words":{"value":get_words(), "color":get_random_color()}}
 for user_id in user_ids:
   res = wm.send_template(user_id, template_id, data)
   print(res)
