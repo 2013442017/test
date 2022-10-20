@@ -34,8 +34,11 @@ def get_birthday():
   return (next - today).days
 
 def get_words():
-  
-   return words.value = "微风吹，星光照，愿你今夜安然入睡充足好，祝你今夜美梦甜甜"
+  words = requests.get("https://api.shadiao.pro/chp")
+  if words.status_code != 200:
+    return get_words()
+  return words.json()['data']['text']
+   
 def get_random_color():
   return "#%06x" % random.randint(0, 0xFFFFFF)
 
@@ -43,7 +46,7 @@ client = WeChatClient(app_id, app_secret)
 
 wm = WeChatMessage(client)
 wea, temperature,lowTemp,highTemp = get_weather()
-data = {"date": {"value": "{}-{}-{}".format(today.year,today.month,today.day),"color": get_random_color(),"size":"20"},"weather":{"value":wea,"color":get_random_color()},"city":{"value":city,"color":get_random_color()},"temperature":{"value":temperature,"color":get_random_color()},"lowest":{"value":"{}℃".format(lowTemp),"color":get_random_color()},"highest":{"value":"{}℃".format(highTemp),"color":get_random_color()},"love_days":{"value":get_count()},"birthday_left":{"value":get_birthday(),"color":get_random_color()},"words":{"value":get_words(), "color":get_random_color()}}
+data = {"date": {"value": "{}-{}-{}".format(today.year,today.month,today.day),"color": get_random_color(),"size":"20"},"weather":{"value":wea,"color":get_random_color()},"city":{"value":city,"color":get_random_color()},"temperature":{"value":temperature,"color":get_random_color()},"lowest":{"value":"{}℃".format(lowTemp),"color":get_random_color()},"highest":{"value":"{}℃".format(highTemp),"color":get_random_color()},"love_days":{"value":get_count()},"birthday_left":{"value":get_birthday(),"color":get_random_color()},"words":{"value":"微风吹，星光照，愿你今夜安然入睡充足好，祝你今夜美梦甜甜", "color":get_random_color()}}
 for user_id in user_ids:
   res = wm.send_template(user_id, template_id, data)
   print(res)
