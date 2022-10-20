@@ -16,7 +16,12 @@ app_secret = os.environ["APP_SECRET"]
 
 user_ids = os.environ["USER_ID"].split("\n")
 template_id = os.environ["TEMPLATE_ID"]
-
+week_list = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"]
+    year = localtime().tm_year
+    month = localtime().tm_mon
+    day = localtime().tm_mday
+    today = datetime.date(datetime(year=year, month=month, day=day))
+    week = week_list[today.isoweekday()]
 
 def get_weather():
   url = "http://autodev.openspeech.cn/csp/api/v2.1/weather?openId=aiuicus&clientType=android&sign=android&city=" + city
@@ -47,7 +52,7 @@ client = WeChatClient(app_id, app_secret)
 
 wm = WeChatMessage(client)
 wea, temperature,lowTemp,highTemp = get_weather()
-data = {"weather":{"value":wea,"color":get_random_color()},"city":{"value":city,"color":get_random_color()},"temperature":{"value":temperature,"color":get_random_color()},"lowest":{"value":lowTemp},"highest":{"value":highTemp},"love_days":{"value":get_count()},"birthday_left":{"value":get_birthday()},"words":{"value":get_words(), "color":get_random_color()}}
+data = {"date": {"value": "{} {}".format(today, week),"color": "#00FFFF""weather":{"value":wea,"color":get_random_color()},"city":{"value":city,"color":get_random_color()},"temperature":{"value":temperature,"color":get_random_color()},"lowest":{"value":lowTemp},"highest":{"value":highTemp},"love_days":{"value":get_count()},"birthday_left":{"value":get_birthday()},"words":{"value":get_words(), "color":get_random_color()}}
 for user_id in user_ids:
   res = wm.send_template(user_id, template_id, data)
   print(res)
